@@ -21,7 +21,7 @@ object CommonParamsInterceptor {
     }
 
     @JvmStatic
-    fun get(context: Context): Interceptor {
+    fun get(): Interceptor {
         return BasicParamsInterceptor.Builder().apply {
             injectHeaderParam {
                 val params = HashMap<String, String>()
