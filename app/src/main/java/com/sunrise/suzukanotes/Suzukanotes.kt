@@ -38,10 +38,6 @@ class Suzukanotes : Application() {
         super.onCreate()
         init(this)
         EasyFrameStarter.init(this)
-    }
-
-    override fun registerActivityLifecycleCallbacks(callback: ActivityLifecycleCallbacks?) {
-        super.registerActivityLifecycleCallbacks(callback)
         registerActivityLifecycleCallbacks(MyActivityLifeCycleCallBack())
     }
 
