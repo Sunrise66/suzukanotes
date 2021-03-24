@@ -16,16 +16,17 @@ import retrofit2.Retrofit
  */
 object SuzukanotesService {
 
-    @JvmStatic
-    fun <T : Any> createApi(apiClass: Class<T>): T {
-        return getRetrofit().create(apiClass)
-    }
-
-    private fun getRetrofit(): Retrofit {
-        return CommonService.getCustomRetrofit(
+    private val retrofit: Retrofit by lazy {
+        CommonService.getCustomRetrofit(
             NetConfig.getInstance().PRIMARY_SERVER_ADDRESS,
             CommonParamsInterceptor.get(),
             HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
         )
     }
+
+    @JvmStatic
+    fun <T : Any> createApi(apiClass: Class<T>): T {
+        return retrofit.create(apiClass)
+    }
+
 }
