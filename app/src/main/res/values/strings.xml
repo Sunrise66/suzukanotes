@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">suzukanotes</string>
+    <string name="title_tab_chara">赛马娘</string>
+    <string name="text_tab_card">支援卡</string>
+    <string name="text_tab_race">比赛</string>
 </resources>

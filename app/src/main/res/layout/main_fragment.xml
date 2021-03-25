@@ -19,8 +19,8 @@
         <FrameLayout
             android:id="@+id/frame_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@id/bottom_nav"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/guideline2"
             app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:layout_weight="1"
-                android:background="@drawable/tab_bottom_left_off"
+                android:background="@drawable/tab_bottom_middle_left_off"
                 android:clickable="true"
                 android:focusable="true"
                 android:orientation="vertical">
@@ -57,7 +57,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginBottom="6dp"
-                    android:text="支援卡"
+                    android:text="@string/text_tab_card"
                     android:textSize="12sp" />
             </LinearLayout>
 
@@ -85,7 +85,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginBottom="6dp"
-                    android:text="赛马娘"
+                    android:text="@string/title_tab_chara"
                     android:textSize="12sp" />
             </LinearLayout>
 
@@ -95,7 +95,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:layout_weight="1"
-                android:background="@drawable/tab_bottom_right_off"
+                android:background="@drawable/tab_bottom_middle_right_off"
                 android:clickable="true"
                 android:focusable="true"
                 android:orientation="vertical">
@@ -113,10 +113,17 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginBottom="6dp"
-                    android:text="比赛"
+                    android:text="@string/text_tab_race"
                     android:textSize="12sp" />
             </LinearLayout>
 
         </LinearLayout>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_end="68dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

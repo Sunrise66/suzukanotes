@@ -10,6 +10,9 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import com.sunrise.suzukanotes.R
+import com.sunrise.suzukanotes.base.CARD_INDEX
+import com.sunrise.suzukanotes.base.CHARA_INDEX
+import com.sunrise.suzukanotes.base.RACE_INDEX
 import com.sunrise.suzukanotes.base.TabAdapter
 import com.sunrise.suzukanotes.databinding.MainFragmentBinding
 
@@ -54,6 +57,10 @@ class MainFragment : Fragment() {
         } else {
             transaction.attach(fragment)
         }
+        transaction
+            .setPrimaryNavigationFragment(fragment)
+            .setReorderingAllowed(true)
+            .commit()
     }
 
     private fun setTabClickListener() {
@@ -66,9 +73,9 @@ class MainFragment : Fragment() {
                 btnCharClicked.value = false
                 btnRaceClicked.value = false
             }
-            it.setBackgroundResource(R.drawable.tab_bottom_left_on)
+            it.setBackgroundResource(R.drawable.tab_bottom_middle_left_on)
             btnChara.setBackgroundResource(R.drawable.tab_bottom_middle_off)
-            btnRace.setBackgroundResource(R.drawable.tab_bottom_right_off)
+            btnRace.setBackgroundResource(R.drawable.tab_bottom_middle_right_off)
             switchFragments(0)
         }
         btnChara.setOnClickListener {
@@ -78,8 +85,8 @@ class MainFragment : Fragment() {
                 btnCardClicked.value = false
             }
             it.setBackgroundResource(R.drawable.tab_bottom_middle_on)
-            btnCard.setBackgroundResource(R.drawable.tab_bottom_left_off)
-            btnRace.setBackgroundResource(R.drawable.tab_bottom_right_off)
+            btnCard.setBackgroundResource(R.drawable.tab_bottom_middle_left_off)
+            btnRace.setBackgroundResource(R.drawable.tab_bottom_middle_right_off)
             switchFragments(1)
         }
         btnRace.setOnClickListener {
@@ -88,8 +95,8 @@ class MainFragment : Fragment() {
                 btnCharClicked.value = false
                 btnCardClicked.value = false
             }
-            it.setBackgroundResource(R.drawable.tab_bottom_right_on)
-            btnCard.setBackgroundResource(R.drawable.tab_bottom_left_off)
+            it.setBackgroundResource(R.drawable.tab_bottom_middle_right_on)
+            btnCard.setBackgroundResource(R.drawable.tab_bottom_middle_left_off)
             btnChara.setBackgroundResource(R.drawable.tab_bottom_middle_off)
             switchFragments(2)
         }

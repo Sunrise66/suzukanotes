@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.sunrise.suzukanotes.R
+import com.sunrise.suzukanotes.databinding.RaceFragmentBinding
 
 class RaceFragment : Fragment() {
 
@@ -14,19 +15,22 @@ class RaceFragment : Fragment() {
         fun newInstance() = RaceFragment()
     }
 
-    private lateinit var viewModel: RaceViewModel
+    private val viewModel: RaceViewModel by lazy {
+        ViewModelProvider(this)[RaceViewModel::class.java]
+    }
+
+    private lateinit var binding: RaceFragmentBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.race_fragment, container, false)
+    ): View {
+        binding = RaceFragmentBinding.inflate(inflater, container, false)
+        binding.lifecycleOwner = this
+        return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(RaceViewModel::class.java)
-        // TODO: Use the ViewModel
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
     }
-
 }

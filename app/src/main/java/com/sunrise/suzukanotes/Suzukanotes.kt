@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.Application
 import android.os.Bundle
 import com.sunrise.easyframe.EasyFrameStarter
+import com.sunrise.suzukanotes.common.UpdateManager
 import java.util.*
 
 /**

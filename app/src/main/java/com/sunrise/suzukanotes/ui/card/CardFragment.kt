@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.sunrise.suzukanotes.R
+import com.sunrise.suzukanotes.databinding.CardFragmentBinding
 
 class CardFragment : Fragment() {
 
@@ -14,19 +15,24 @@ class CardFragment : Fragment() {
         fun newInstance() = CardFragment()
     }
 
-    private lateinit var viewModel: CardViewModel
+    private val viewModel: CardViewModel by lazy {
+        ViewModelProvider(this)[CardViewModel::class.java]
+    }
+
+    private lateinit var binding: CardFragmentBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.card_fragment, container, false)
+    ): View {
+        binding = CardFragmentBinding.inflate(inflater, container, false)
+        binding.lifecycleOwner = this
+        return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(CardViewModel::class.java)
-        // TODO: Use the ViewModel
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
     }
+
 
 }
