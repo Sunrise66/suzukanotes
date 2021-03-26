@@ -3,4 +3,6 @@
     <string name="title_tab_chara">赛马娘</string>
     <string name="text_tab_card">支援卡</string>
     <string name="text_tab_race">比赛</string>
+    <string name="space_modifier" translatable="false">&#160;%s&#160;</string>
+    <string name="space_modifier_2" translatable="false">&#160;&#160;%s&#160;&#160;</string>
 </resources>

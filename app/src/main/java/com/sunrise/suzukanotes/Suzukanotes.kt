@@ -4,7 +4,7 @@ import android.app.Activity
 import android.app.Application
 import android.os.Bundle
 import com.sunrise.easyframe.EasyFrameStarter
-import com.sunrise.suzukanotes.common.UpdateManager
+import com.sunrise.suzukanotes.common.I18N
 import java.util.*
 
 /**
@@ -37,6 +37,7 @@ class Suzukanotes : Application() {
     override fun onCreate() {
         super.onCreate()
         init(this)
+        I18N.application = this
         EasyFrameStarter.init(this)
         registerActivityLifecycleCallbacks(MyActivityLifeCycleCallBack())
     }
