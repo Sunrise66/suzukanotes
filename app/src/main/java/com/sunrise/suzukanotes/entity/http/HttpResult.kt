@@ -1,4 +1,4 @@
-package com.sunrise.suzukanotes.entity
+package com.sunrise.suzukanotes.entity.http
 
 /**
  *@author: JiangYu

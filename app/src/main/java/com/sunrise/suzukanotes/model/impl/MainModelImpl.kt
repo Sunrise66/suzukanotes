@@ -1,6 +1,6 @@
 package com.sunrise.suzukanotes.model.impl
 
-import com.sunrise.suzukanotes.entity.HttpResult
+import com.sunrise.suzukanotes.entity.http.HttpResult
 import com.sunrise.suzukanotes.model.IMainModel
 import com.sunrise.suzukanotes.net.SuzukanotesService
 import com.sunrise.suzukanotes.net.api.Api

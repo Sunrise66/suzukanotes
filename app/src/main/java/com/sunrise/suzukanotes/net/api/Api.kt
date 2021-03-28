@@ -1,7 +1,7 @@
 package com.sunrise.suzukanotes.net.api
 
-import com.sunrise.suzukanotes.entity.HttpResult
-import com.sunrise.suzukanotes.entity.ResReq
+import com.sunrise.suzukanotes.entity.http.HttpResult
+import com.sunrise.suzukanotes.entity.http.ResReq
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET

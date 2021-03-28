@@ -3,6 +3,11 @@
     <string name="title_tab_chara">赛马娘</string>
     <string name="text_tab_card">支援卡</string>
     <string name="text_tab_race">比赛</string>
+    <string name="new_db_version_dialog_title">数据库更新</string>
+    <string name="new_db_version_dialog_message_check">有新的数据库版本，是否更新？</string>
+    <string name="new_db_version_dialog_message_force">当前数据库需要强制更新</string>
+    <string name="dialog_positive_button_1">确定</string>
+    <string name="dialog_negative_button_1">取消</string>
     <string name="space_modifier" translatable="false">&#160;%s&#160;</string>
     <string name="space_modifier_2" translatable="false">&#160;&#160;%s&#160;&#160;</string>
 </resources>

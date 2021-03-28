@@ -1,6 +1,6 @@
 package com.sunrise.suzukanotes.model
 
-import com.sunrise.suzukanotes.entity.HttpResult
+import com.sunrise.suzukanotes.entity.http.HttpResult
 
 /**
  *@author: Sunrise
