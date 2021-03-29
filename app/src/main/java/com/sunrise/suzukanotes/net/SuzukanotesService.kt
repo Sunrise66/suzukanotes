@@ -1,7 +1,5 @@
 package com.sunrise.suzukanotes.net
 
-import android.app.Application
-import android.content.Context
 import com.sunrise.easyframe.common.NetConfig
 import com.sunrise.easyframe.net.CommonService
 import com.sunrise.suzukanotes.net.interceptor.CommonParamsInterceptor

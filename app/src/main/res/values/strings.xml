@@ -6,6 +6,11 @@
     <string name="new_db_version_dialog_title">数据库更新</string>
     <string name="new_db_version_dialog_message_check">有新的数据库版本，是否更新？</string>
     <string name="new_db_version_dialog_message_force">当前数据库需要强制更新</string>
+    <string name="alert_dialog_title">注意</string>
+    <string name="progress_dialog_title">下载</string>
+    <string name="progress_dialog_message_default">开始下载…</string>
+    <string name="progress_dialog_message_downloading">%d / %d KB download.</string>
+    <string name="progress_dialog_message_install_db">数据库初始化中…</string>
     <string name="dialog_positive_button_1">确定</string>
     <string name="dialog_negative_button_1">取消</string>
     <string name="space_modifier" translatable="false">&#160;%s&#160;</string>

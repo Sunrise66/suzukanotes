@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.TextView
 import com.sunrise.suzukanotes.R
 import per.goweii.anylayer.AnyLayer
+import per.goweii.anylayer.DialogLayer
 
 /**
  *@author: JiangYu
@@ -20,9 +21,9 @@ object Dialogs {
     fun showNewDBVersionDialog(
         mContext: Context,
         isForce: Boolean = false,
-        callback: DialogCallback? = null
-    ) {
-        AnyLayer.dialog(mContext).apply {
+        callbackNewDBVersion: NewDBVersionDialogCallback? = null
+    ): DialogLayer {
+        return AnyLayer.dialog(mContext).apply {
             contentView(R.layout.normal_dialog)
             gravity(Gravity.CENTER)
             cancelableOnTouchOutside(false)
@@ -37,7 +38,7 @@ object Dialogs {
                         text = mContext.getString(R.string.dialog_positive_button_1)
                         setOnClickListener {
                             dismiss()
-                            callback?.positiveCallback(it)
+                            callbackNewDBVersion?.positiveCallback(it)
                         }
                     }
                 } else {
@@ -47,23 +48,71 @@ object Dialogs {
                         text = mContext.getString(R.string.dialog_negative_button_1)
                         setOnClickListener {
                             dismiss()
-                            callback?.negativeCallback(it)
+                            callbackNewDBVersion?.negativeCallback(it)
                         }
                     }
                     getView<Button>(R.id.dialog_positive).apply {
                         text = mContext.getString(R.string.dialog_positive_button_1)
                         setOnClickListener {
                             dismiss()
-                            callback?.positiveCallback(it)
+                            callbackNewDBVersion?.positiveCallback(it)
                         }
                     }
                 }
             }
-        }.show()
+            show()
+        }
     }
 
-    interface DialogCallback {
+    fun showAlertDialog(
+        mContext: Context,
+        msg: String,
+        callback: AlertDialogCallback?
+    ): DialogLayer {
+        return AnyLayer.dialog(mContext).apply {
+            contentView(R.layout.normal_dialog)
+            gravity(Gravity.CENTER)
+            cancelableOnTouchOutside(false)
+            bindData {
+                getView<TextView>(R.id.dialog_title).text =
+                    mContext.getString(R.string.alert_dialog_title)
+                getView<TextView>(R.id.message).text = msg
+                getView<Button>(R.id.dialog_positive).apply {
+                    text = mContext.getString(R.string.dialog_positive_button_1)
+                    setOnClickListener {
+                        dismiss()
+                        callback?.positiveCallback(it)
+                    }
+                }
+                getView<Button>(R.id.dialog_negative).visibility = View.GONE
+            }
+            show()
+        }
+    }
+
+    fun showDownloadDialog(mContext: Context): DialogLayer {
+        return AnyLayer.dialog(mContext).apply {
+            contentView(R.layout.normal_dialog)
+            gravity(Gravity.CENTER)
+            cancelableOnTouchOutside(false)
+            bindData {
+                getView<TextView>(R.id.dialog_title).text =
+                    mContext.getString(R.string.progress_dialog_title)
+                getView<TextView>(R.id.message).text =
+                    mContext.getString(R.string.progress_dialog_message_default)
+                getView<Button>(R.id.dialog_negative).visibility = View.GONE
+                getView<Button>(R.id.dialog_positive).visibility = View.GONE
+            }
+            show()
+        }
+    }
+
+    interface NewDBVersionDialogCallback {
         fun positiveCallback(v: View)
         fun negativeCallback(v: View)
+    }
+
+    interface AlertDialogCallback {
+        fun positiveCallback(v: View)
     }
 }

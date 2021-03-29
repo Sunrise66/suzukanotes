@@ -1,6 +1,7 @@
 package com.sunrise.suzukanotes.model
 
 import com.sunrise.suzukanotes.entity.http.HttpResult
+import com.sunrise.suzukanotes.entity.http.StringResult
 
 /**
  *@author: Sunrise
@@ -9,6 +10,6 @@ import com.sunrise.suzukanotes.entity.http.HttpResult
  *Email: e1175132893@outlook.com
  */
 interface IMainModel {
-    suspend fun checkDBVersion(version: Int): HttpResult<Boolean>
-    suspend fun getDBPath(): HttpResult<String>
+    suspend fun checkDBVersion(): HttpResult<Int>
+    suspend fun getDBPath(): StringResult
 }

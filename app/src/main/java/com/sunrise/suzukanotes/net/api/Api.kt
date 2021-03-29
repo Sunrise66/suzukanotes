@@ -2,6 +2,7 @@ package com.sunrise.suzukanotes.net.api
 
 import com.sunrise.suzukanotes.entity.http.HttpResult
 import com.sunrise.suzukanotes.entity.http.ResReq
+import com.sunrise.suzukanotes.entity.http.StringResult
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -17,16 +18,16 @@ import retrofit2.http.Path
 interface Api {
 
     interface ResourceApiController {
-        @GET("/api/files/version")
-        fun checkDBVersion(@Path("version") version: Int): Call<HttpResult<Boolean>>
+        @GET("api/files/version")
+        fun checkDBVersion(): Call<HttpResult<Int>>
 
-        @POST("/api/files/master")
-        fun getDBPath(): Call<HttpResult<String>>
+        @GET("api/files/master")
+        fun getDBPath(): Call<StringResult>
 
-        @POST("/api/image/png")
-        fun getResourcePath(@Body request: ResReq): Call<HttpResult<String>>
+        @POST("api/image/png")
+        fun getResourcePath(@Body request: ResReq): Call<StringResult>
 
-        @POST("/api/image/base64")
+        @POST("api/image/base64")
         fun getResourceBase64(@Body request: ResReq): Call<HttpResult<String>>
     }
 
