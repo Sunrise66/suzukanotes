@@ -64,7 +64,7 @@ class UpdateHelper(context: Context) : AbsSharedPreference(context, "version_con
 
     }
 
-    fun installDB(){
+    fun installDB() {
         updateHandler.sendMessage(updateHandler.obtainMessage(UPDATE_COMPLETED))
     }
 
@@ -91,7 +91,6 @@ class UpdateHelper(context: Context) : AbsSharedPreference(context, "version_con
                 downloadUrl = content
             } else {
                 errmsg = msg
-                callback?.dbUpdateError(msg)
                 updateHandler.sendMessage(updateHandler.obtainMessage(UPDATE_DOWNLOAD_ERROR))
             }
         }
@@ -138,7 +137,7 @@ class UpdateHelper(context: Context) : AbsSharedPreference(context, "version_con
         }
     }
 
-    private val updateHandler = Handler(Handler.Callback { msg: Message ->
+    private val updateHandler = Handler(Looper.getMainLooper()) { msg: Message ->
         when (msg.what) {
             APP_UPDATE_CHECK_COMPLETED ->
                 callback?.appCheckUpdateCompleted()
@@ -160,7 +159,7 @@ class UpdateHelper(context: Context) : AbsSharedPreference(context, "version_con
             }
         }
         true
-    })
+    }
 
     interface UpdateCallback {
         fun appCheckUpdateCompleted()

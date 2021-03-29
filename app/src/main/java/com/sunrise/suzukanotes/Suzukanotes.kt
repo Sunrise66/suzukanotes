@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.Application
 import android.os.Bundle
 import com.sunrise.easyframe.EasyFrameStarter
+import com.sunrise.suzukanotes.common.DBHelper
 import com.sunrise.suzukanotes.common.I18N
 import com.sunrise.suzukanotes.common.UpdateHelper
 import com.sunrise.suzukanotes.utils.Utils
@@ -43,6 +44,7 @@ class Suzukanotes : Application() {
         Utils.setApp(this)
         EasyFrameStarter.init(this)
         UpdateHelper.with(this)
+        DBHelper.with(this)
         registerActivityLifecycleCallbacks(MyActivityLifeCycleCallBack())
     }
 
