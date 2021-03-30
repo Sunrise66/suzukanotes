@@ -16,12 +16,12 @@ import retrofit2.await
 class MainModelImpl : IMainModel {
     private val api = SuzukanotesService.createApi(Api.ResourceApiController::class.java)
 
-    override suspend fun checkDBVersion(): HttpResult<Int> {
-        return api.checkDBVersion().await()
+    override suspend fun checkDBVersion(local: String): HttpResult<Int> {
+        return api.checkDBVersion(local).await()
     }
 
-    override suspend fun getDBPath(): StringResult {
-        return api.getDBPath().await()
+    override suspend fun getDBPath(local: String): StringResult {
+        return api.getDBPath(local).await()
     }
 
 }

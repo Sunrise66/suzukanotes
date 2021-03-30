@@ -1,5 +1,7 @@
 package com.sunrise.suzukanotes.utils;
 
+import com.sunrise.suzukanotes.common.Static;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -13,8 +15,28 @@ public class FileUtils {
         return Utils.getApp().getDataDir().getAbsolutePath() + "/databases";
     }
 
-    public static String getDbFilePath() {
-        return Utils.getApp().getDatabasePath("master.mdb").getAbsolutePath();
+    public static String getDbFilePath(String local) {
+        if ("jp".equals(local)) {
+            return Utils.getApp().getDatabasePath(Static.DB_FILE_NAME_JP).getAbsolutePath();
+        } else if ("cn".equals(local)) {
+            return Utils.getApp().getDatabasePath(Static.DB_FILE_NAME_CN).getAbsolutePath();
+        } else if ("kr".equals(local)) {
+            return Utils.getApp().getDatabasePath(Static.DB_FILE_NAME_KR).getAbsolutePath();
+        } else {
+            return Utils.getApp().getDatabasePath(Static.DB_FILE_NAME).getAbsolutePath();
+        }
+    }
+
+    public static String getCompressedDbFilePath(String local) {
+        if ("jp".equals(local)) {
+            return Utils.getApp().getDatabasePath(Static.DB_FILE_NAME_COMPRESSED_JP).getAbsolutePath();
+        } else if ("cn".equals(local)) {
+            return Utils.getApp().getDatabasePath(Static.DB_FILE_NAME_COMPRESSED_CN).getAbsolutePath();
+        } else if ("kr".equals(local)) {
+            return Utils.getApp().getDatabasePath(Static.DB_FILE_NAME_COMPRESSED_KR).getAbsolutePath();
+        } else {
+            return Utils.getApp().getDatabasePath(Static.DB_FILE_NAME_COMPRESSED).getAbsolutePath();
+        }
     }
 
     public static String getFileFilePath(String fileName) {
@@ -27,18 +49,18 @@ public class FileUtils {
      * @param desPath 目标路径
      * @param delete  是否删除源
      */
-    public static void copyFile(String fileName, String srcPath, String desPath, boolean delete){
+    public static void copyFile(String fileName, String srcPath, String desPath, boolean delete) {
         String srcFilePath = srcPath + fileName;
         String desFilePath = desPath + fileName;
         File dataBaseDir = new File(desPath);
         //检查数据库文件夹是否存在
-        if(!dataBaseDir.exists())
+        if (!dataBaseDir.exists())
             dataBaseDir.mkdirs();
 
         File exDB = new File(desFilePath);
-        if(exDB.exists())
+        if (exDB.exists())
             exDB.delete();
-        try{
+        try {
             FileInputStream fileInputStream = new FileInputStream(srcFilePath);
             FileOutputStream fileOutputStream = new FileOutputStream(exDB);
             byte[] buffer = new byte[1024];
@@ -48,11 +70,11 @@ public class FileUtils {
             fileOutputStream.flush();
             fileOutputStream.close();
             fileInputStream.close();
-            if(delete){
+            if (delete) {
                 File srcFile = new File(srcFilePath);
                 srcFile.delete();
             }
-        } catch (IOException ex){
+        } catch (IOException ex) {
             ex.printStackTrace();
         }
     }
@@ -88,7 +110,7 @@ public class FileUtils {
         return flag;
     }
 
-    public static boolean checkFile(@NotNull File file){
+    public static boolean checkFile(@NotNull File file) {
         if (!file.exists()) {
             LogUtils.file(LogUtils.I, "FileCheck", "FileNotExists: " + file.getAbsolutePath());
             return false;
@@ -96,7 +118,7 @@ public class FileUtils {
         return true;
     }
 
-    public static boolean checkFile(String filePath){
+    public static boolean checkFile(String filePath) {
         File file = new File(filePath);
         return checkFile(file);
     }
@@ -114,7 +136,7 @@ public class FileUtils {
         return true;
     }
 
-    public static void checkFileAndDeleteIfExists(File file){
+    public static void checkFileAndDeleteIfExists(File file) {
         if (file.exists()) deleteFile(file);
     }
 }

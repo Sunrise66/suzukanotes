@@ -10,7 +10,9 @@ import com.sunrise.easyframe.common.NetConfig
 import com.sunrise.easyframe.delegates.AbsSharedPreference
 import com.sunrise.suzukanotes.model.IMainModel
 import com.sunrise.suzukanotes.model.impl.MainModelImpl
+import com.sunrise.suzukanotes.utils.BrotliUtils
 import com.sunrise.suzukanotes.utils.FileUtils
+import com.sunrise.suzukanotes.utils.LogUtils
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
@@ -27,6 +29,8 @@ import kotlin.concurrent.thread
 class UpdateHelper(context: Context) : AbsSharedPreference(context, "version_conf") {
     var dbVersion: Int by sharedPreference
     var dbFileLength: Int by sharedPreference
+    var dbLocal: String by sharedPreference
+
     private val model: IMainModel by lazy {
         MainModelImpl()
     }
@@ -64,12 +68,8 @@ class UpdateHelper(context: Context) : AbsSharedPreference(context, "version_con
 
     }
 
-    fun installDB() {
-        updateHandler.sendMessage(updateHandler.obtainMessage(UPDATE_COMPLETED))
-    }
-
     suspend fun checkDBVersion() {
-        model.checkDBVersion().apply {
+        model.checkDBVersion(dbLocal).apply {
             if (code == 200) {
                 hasNewVersion = dbVersion != data
                 versionInfo = data
@@ -85,8 +85,16 @@ class UpdateHelper(context: Context) : AbsSharedPreference(context, "version_con
         if (isForce) {
             FileUtils.deleteDirectory(File(FileUtils.getDbDirectoryPath()))
         }
+        model.checkDBVersion(dbLocal).apply {
+            if (code == 200) {
+                versionInfo = data
+            } else {
+                errmsg = msg
+                updateHandler.sendMessage(updateHandler.obtainMessage(UPDATE_DOWNLOAD_ERROR))
+            }
+        }
         var downloadUrl = ""
-        model.getDBPath().apply {
+        model.getDBPath(dbLocal).apply {
             if (code == 200) {
                 downloadUrl = content
             } else {
@@ -106,11 +114,11 @@ class UpdateHelper(context: Context) : AbsSharedPreference(context, "version_con
                 if (!File(FileUtils.getDbDirectoryPath()).exists()) {
                     if (!File(FileUtils.getDbDirectoryPath()).mkdirs()) throw Exception("Cannot create DB path.")
                 }
-                val dbFile = File(FileUtils.getDbFilePath())
-                if (File(FileUtils.getDbDirectoryPath()).exists()) {
-                    FileUtils.deleteFile(dbFile)
+                val compressedFile = File(FileUtils.getCompressedDbFilePath(dbLocal))
+                if (compressedFile.exists()) {
+                    FileUtils.deleteFile(compressedFile)
                 }
-                val fileOutputStream = FileOutputStream(dbFile)
+                val fileOutputStream = FileOutputStream(compressedFile)
                 var totalDownload = 0
                 val buf = ByteArray(1024 * 1024)
                 var numRead: Int
@@ -120,14 +128,13 @@ class UpdateHelper(context: Context) : AbsSharedPreference(context, "version_con
                     progress = totalDownload
                     updateHandler.sendMessage(updateHandler.obtainMessage(UPDATE_DOWNLOADING))
                     if (numRead <= 0) {
-                        updateHandler.sendEmptyMessage(UPDATE_DOWNLOAD_COMPLETED)
                         break
                     }
                     fileOutputStream.write(buf, 0, numRead)
                 }
                 inputStream.close()
                 fileOutputStream.close()
-                updateHandler.sendMessage(updateHandler.obtainMessage(UPDATE_DOWNLOAD_COMPLETED))
+                updateHandler.sendEmptyMessage(UPDATE_DOWNLOAD_COMPLETED)
                 Looper.loop()
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -135,6 +142,13 @@ class UpdateHelper(context: Context) : AbsSharedPreference(context, "version_con
                 updateHandler.sendMessage(updateHandler.obtainMessage(UPDATE_DOWNLOAD_ERROR))
             }
         }
+    }
+
+    fun doDecompress() {
+        FileUtils.deleteFile(FileUtils.getDbFilePath(dbLocal))
+        LogUtils.file(LogUtils.I, "Start decompress DB.")
+        BrotliUtils.deCompress(FileUtils.getCompressedDbFilePath(dbLocal), true)
+        updateHandler.sendEmptyMessage(UPDATE_COMPLETED)
     }
 
     private val updateHandler = Handler(Looper.getMainLooper()) { msg: Message ->
@@ -152,7 +166,7 @@ class UpdateHelper(context: Context) : AbsSharedPreference(context, "version_con
             UPDATE_DOWNLOAD_COMPLETED ->
                 callback?.dbDownloadCompleted(true, "Download Success")
             UPDATE_COMPLETED ->
-                callback?.dbUpdateCompleted()
+                callback?.dbUpdateCompleted(versionInfo)
             UPDATE_DOWNLOAD_CANCELED ->
                 TODO()
             else -> {
@@ -168,6 +182,6 @@ class UpdateHelper(context: Context) : AbsSharedPreference(context, "version_con
         fun dbDownloadProgressChanged(progress: Int, maxLength: Int)
         fun dbUpdateError(msg: String)
         fun dbDownloadCompleted(success: Boolean, errorMsg: CharSequence? = null)
-        fun dbUpdateCompleted()
+        fun dbUpdateCompleted(versionInfo:Int)
     }
 }

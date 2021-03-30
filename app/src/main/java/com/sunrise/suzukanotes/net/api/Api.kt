@@ -18,11 +18,11 @@ import retrofit2.http.Path
 interface Api {
 
     interface ResourceApiController {
-        @GET("api/files/version")
-        fun checkDBVersion(): Call<HttpResult<Int>>
+        @GET("api/files/version/{local}")
+        fun checkDBVersion(@Path("local") local: String): Call<HttpResult<Int>>
 
-        @GET("api/files/master")
-        fun getDBPath(): Call<StringResult>
+        @GET("api/files/master/{local}")
+        fun getDBPath(@Path("local") local: String): Call<StringResult>
 
         @POST("api/image/png")
         fun getResourcePath(@Body request: ResReq): Call<StringResult>

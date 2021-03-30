@@ -11,6 +11,7 @@
     <string name="progress_dialog_message_default">开始下载…</string>
     <string name="progress_dialog_message_downloading">%d / %d KB download.</string>
     <string name="progress_dialog_message_install_db">数据库初始化中…</string>
+    <string name="progress_dialog_message_install_db_complete">数据库更新完成！</string>
     <string name="dialog_positive_button_1">确定</string>
     <string name="dialog_negative_button_1">取消</string>
     <string name="space_modifier" translatable="false">&#160;%s&#160;</string>

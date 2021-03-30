@@ -3,6 +3,7 @@ package com.sunrise.suzukanotes
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
@@ -58,10 +59,10 @@ class MainActivity : AppCompatActivity(), UpdateHelper.UpdateCallback {
     }
 
     private fun checkDbFile(): Boolean {
-        return if (!File(FileUtils.getDbFilePath()).exists()) {
+        return if (!File(FileUtils.getDbFilePath(UpdateHelper.get().dbLocal)).exists()) {
             false
         } else {
-            File(FileUtils.getDbFilePath()).length() >= UpdateHelper.get().dbFileLength
+            File(FileUtils.getDbFilePath(UpdateHelper.get().dbLocal)).length() >= UpdateHelper.get().dbFileLength
         }
     }
 
@@ -129,10 +130,13 @@ class MainActivity : AppCompatActivity(), UpdateHelper.UpdateCallback {
      */
     override fun dbDownloadCompleted(success: Boolean, errorMsg: CharSequence?) {
         if (success) {
-            UpdateHelper.get().dbVersion = dbInfo
             if (progressDialog?.isShow!!) {
                 progressDialog?.getView<TextView>(R.id.message)?.text =
                     getString(R.string.progress_dialog_message_install_db)
+            }
+            UpdateHelper.get().apply {
+                dbVersion = dbInfo
+                doDecompress()
             }
         }
     }
@@ -140,7 +144,17 @@ class MainActivity : AppCompatActivity(), UpdateHelper.UpdateCallback {
     /**
      * 数据库升级完成回调
      */
-    override fun dbUpdateCompleted() {
-
+    override fun dbUpdateCompleted(versionInfo: Int) {
+        if (progressDialog?.isShow!!) {
+            progressDialog?.getView<TextView>(R.id.message)?.text =
+                getString(R.string.progress_dialog_message_install_db_complete)
+            progressDialog?.getView<Button>(R.id.dialog_positive)?.apply {
+                visibility = View.VISIBLE
+                setOnClickListener {
+                    progressDialog?.dismiss()
+                }
+            }
+        }
+        UpdateHelper.get().dbVersion = versionInfo
     }
 }

@@ -10,6 +10,6 @@ import com.sunrise.suzukanotes.entity.http.StringResult
  *Email: e1175132893@outlook.com
  */
 interface IMainModel {
-    suspend fun checkDBVersion(): HttpResult<Int>
-    suspend fun getDBPath(): StringResult
+    suspend fun checkDBVersion(local:String): HttpResult<Int>
+    suspend fun getDBPath(local: String): StringResult
 }
