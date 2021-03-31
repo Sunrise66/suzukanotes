@@ -4,8 +4,6 @@ import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
-import android.view.View
-import androidx.lifecycle.lifecycleScope
 import com.sunrise.easyframe.common.NetConfig
 import com.sunrise.easyframe.delegates.AbsSharedPreference
 import com.sunrise.suzukanotes.model.IMainModel
@@ -13,7 +11,6 @@ import com.sunrise.suzukanotes.model.impl.MainModelImpl
 import com.sunrise.suzukanotes.utils.BrotliUtils
 import com.sunrise.suzukanotes.utils.FileUtils
 import com.sunrise.suzukanotes.utils.LogUtils
-import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
 import java.net.HttpURLConnection
@@ -114,7 +111,7 @@ class UpdateHelper(context: Context) : AbsSharedPreference(context, "version_con
                 if (!File(FileUtils.getDbDirectoryPath()).exists()) {
                     if (!File(FileUtils.getDbDirectoryPath()).mkdirs()) throw Exception("Cannot create DB path.")
                 }
-                val compressedFile = File(FileUtils.getCompressedDbFilePath(dbLocal))
+                val compressedFile = File(FileUtils.getCompressedDbFilePath())
                 if (compressedFile.exists()) {
                     FileUtils.deleteFile(compressedFile)
                 }
@@ -145,9 +142,9 @@ class UpdateHelper(context: Context) : AbsSharedPreference(context, "version_con
     }
 
     fun doDecompress() {
-        FileUtils.deleteFile(FileUtils.getDbFilePath(dbLocal))
+        FileUtils.deleteFile(FileUtils.getDbFilePath())
         LogUtils.file(LogUtils.I, "Start decompress DB.")
-        BrotliUtils.deCompress(FileUtils.getCompressedDbFilePath(dbLocal), true)
+        BrotliUtils.deCompress(FileUtils.getCompressedDbFilePath(), true)
         updateHandler.sendEmptyMessage(UPDATE_COMPLETED)
     }
 

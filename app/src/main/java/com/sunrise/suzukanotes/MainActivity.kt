@@ -8,6 +8,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.sunrise.suzukanotes.common.Dialogs
+import com.sunrise.suzukanotes.common.Static
 import com.sunrise.suzukanotes.common.UpdateHelper
 import com.sunrise.suzukanotes.model.IMainModel
 import com.sunrise.suzukanotes.model.impl.MainModelImpl
@@ -59,10 +60,10 @@ class MainActivity : AppCompatActivity(), UpdateHelper.UpdateCallback {
     }
 
     private fun checkDbFile(): Boolean {
-        return if (!File(FileUtils.getDbFilePath(UpdateHelper.get().dbLocal)).exists()) {
+        return if (!File(FileUtils.getDbFilePath()).exists()) {
             false
         } else {
-            File(FileUtils.getDbFilePath(UpdateHelper.get().dbLocal)).length() >= UpdateHelper.get().dbFileLength
+            File(FileUtils.getDbFilePath()).length() >= UpdateHelper.get().dbFileLength
         }
     }
 
@@ -84,7 +85,6 @@ class MainActivity : AppCompatActivity(), UpdateHelper.UpdateCallback {
                 object : Dialogs.NewDBVersionDialogCallback {
                     override fun positiveCallback(v: View) {
                         this@MainActivity.lifecycleScope.launch {
-                            dbInfo = updateInfo
                             UpdateHelper.get().downloadDB(false)
                         }
                     }
@@ -135,7 +135,6 @@ class MainActivity : AppCompatActivity(), UpdateHelper.UpdateCallback {
                     getString(R.string.progress_dialog_message_install_db)
             }
             UpdateHelper.get().apply {
-                dbVersion = dbInfo
                 doDecompress()
             }
         }
@@ -156,5 +155,26 @@ class MainActivity : AppCompatActivity(), UpdateHelper.UpdateCallback {
             }
         }
         UpdateHelper.get().dbVersion = versionInfo
+        setStatic()
+    }
+
+    private fun setStatic() {
+        when (UpdateHelper.get().dbLocal) {
+            "jp" -> {
+                Static.DB_FILE_NAME = Static.DB_FILE_NAME_JP
+                Static.DB_FILE_NAME_COMPRESSED = Static.DB_FILE_NAME_COMPRESSED_JP
+            }
+            "cn" -> {
+                Static.DB_FILE_NAME = Static.DB_FILE_NAME_CN
+                Static.DB_FILE_NAME_COMPRESSED = Static.DB_FILE_NAME_COMPRESSED_CN
+            }
+            "kr" -> {
+                Static.DB_FILE_NAME = Static.DB_FILE_NAME_KR
+                Static.DB_FILE_NAME_COMPRESSED = Static.DB_FILE_NAME_COMPRESSED_KR
+            }
+            else -> {
+                UpdateHelper.get().dbLocal = "jp"
+            }
+        }
     }
 }

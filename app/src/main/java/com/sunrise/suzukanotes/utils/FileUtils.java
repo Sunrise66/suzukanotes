@@ -15,28 +15,12 @@ public class FileUtils {
         return Utils.getApp().getDataDir().getAbsolutePath() + "/databases";
     }
 
-    public static String getDbFilePath(String local) {
-        if ("jp".equals(local)) {
-            return Utils.getApp().getDatabasePath(Static.DB_FILE_NAME_JP).getAbsolutePath();
-        } else if ("cn".equals(local)) {
-            return Utils.getApp().getDatabasePath(Static.DB_FILE_NAME_CN).getAbsolutePath();
-        } else if ("kr".equals(local)) {
-            return Utils.getApp().getDatabasePath(Static.DB_FILE_NAME_KR).getAbsolutePath();
-        } else {
-            return Utils.getApp().getDatabasePath(Static.DB_FILE_NAME).getAbsolutePath();
-        }
+    public static String getDbFilePath() {
+        return Utils.getApp().getDatabasePath(Static.DB_FILE_NAME).getAbsolutePath();
     }
 
-    public static String getCompressedDbFilePath(String local) {
-        if ("jp".equals(local)) {
-            return Utils.getApp().getDatabasePath(Static.DB_FILE_NAME_COMPRESSED_JP).getAbsolutePath();
-        } else if ("cn".equals(local)) {
-            return Utils.getApp().getDatabasePath(Static.DB_FILE_NAME_COMPRESSED_CN).getAbsolutePath();
-        } else if ("kr".equals(local)) {
-            return Utils.getApp().getDatabasePath(Static.DB_FILE_NAME_COMPRESSED_KR).getAbsolutePath();
-        } else {
-            return Utils.getApp().getDatabasePath(Static.DB_FILE_NAME_COMPRESSED).getAbsolutePath();
-        }
+    public static String getCompressedDbFilePath() {
+        return Utils.getApp().getDatabasePath(Static.DB_FILE_NAME_COMPRESSED).getAbsolutePath();
     }
 
     public static String getFileFilePath(String fileName) {
