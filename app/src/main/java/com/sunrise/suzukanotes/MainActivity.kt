@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
+import com.sunrise.suzukanotes.common.DBHelper
 import com.sunrise.suzukanotes.common.Dialogs
 import com.sunrise.suzukanotes.common.Static
 import com.sunrise.suzukanotes.common.UpdateHelper
@@ -20,10 +21,6 @@ import java.io.File
 
 class MainActivity : AppCompatActivity(), UpdateHelper.UpdateCallback {
 
-    private val model: IMainModel by lazy {
-        MainModelImpl()
-    }
-    private var dbInfo = 0
     private var progressDialog: DialogLayer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {

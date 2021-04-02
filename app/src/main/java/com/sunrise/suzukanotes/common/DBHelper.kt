@@ -6,6 +6,9 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.text.TextUtils
+import com.sunrise.suzukanotes.entity.db.RawSkill
+import com.sunrise.suzukanotes.entity.db.RawAvailableSkillSet
+import com.sunrise.suzukanotes.entity.db.RawCardData
 import com.sunrise.suzukanotes.utils.FileUtils
 import com.sunrise.suzukanotes.utils.LogUtils
 import java.util.HashMap
@@ -312,7 +315,8 @@ class DBHelper(application: Application) :
         val cursor = readableDatabase.rawQuery(sql, null)
         val result: MutableMap<Int, String> = HashMap()
         while (cursor.moveToNext()) {
-            result[cursor.getInt(cursor.getColumnIndex(key))] = cursor.getString(cursor.getColumnIndex(value))
+            result[cursor.getInt(cursor.getColumnIndex(key))] =
+                cursor.getString(cursor.getColumnIndex(value))
         }
         cursor.close()
         return result
@@ -320,5 +324,53 @@ class DBHelper(application: Application) :
 
     /*********************************************************************************************************/
 
+    fun getRawCardDatas(): List<RawCardData>? {
+        return getBeanListByRaw(
+            """
+                select cd.id,
+                       cd.chara_id,
+                       cd.available_skill_set_id,
+                       cd.talent_speed,
+                       cd.talent_stamina,
+                       cd.talent_pow,
+                       cd.talent_guts,
+                       cd.talent_wiz,
+                       cd.talent_group_id,
+                       cd.bg_id,
+                       cd.running_style,
+                       group_concat(td.text, ';') details
+                from card_data cd
+                         left join text_data td on cd.chara_id = td."index"
+                where td.category in (6, 7, 8, 9, 144, 157, 158, 162, 163, 164, 165, 166, 167, 168, 169)
+                group by td."index"
+            """.trimIndent(),
+            RawCardData::class.java
+        )
+    }
 
+    fun getRawAvailableSkillSet(id: Int): RawAvailableSkillSet? {
+        return getBeanByRaw<RawAvailableSkillSet>(
+            """
+                select available_skill_set_id,
+                       group_concat(skill_id, ';') skill_ids
+                from available_skill_set
+                where available_skill_set_id = $id
+                group by available_skill_set_id
+            """.trimIndent(),
+            RawAvailableSkillSet::class.java
+        )
+    }
+
+    fun getRawSkill(id: Int): RawSkill? {
+        return getBeanByRaw<RawSkill>(
+            """
+                select sd.*,
+                group_concat(td.text,';') details
+                from skill_data sd
+                         left join text_data td on sd.id = td."index"
+                where sd.id = $id and td.category in (47,48)
+            """.trimIndent(),
+            RawSkill::class.java
+        )
+    }
 }
