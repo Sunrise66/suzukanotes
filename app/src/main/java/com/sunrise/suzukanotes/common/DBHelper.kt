@@ -383,7 +383,7 @@ class DBHelper(application: Application) :
                 select *
                 from card_rarity_data
                 where card_id = $cardId
-                ORDER BY rarity DESC
+                ORDER BY rarity
             """.trimIndent(),
             RawCardRarity::class.java
         )
