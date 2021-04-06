@@ -6,4 +6,9 @@ package com.sunrise.suzukanotes.entity.bean
  *Time: 16:35
  *Email: e1175132893@outlook.com
  */
-data class Skill(val id: Int, val name: String, val description: String)
+data class Skill(
+    var id: Int = -1,
+    var name: String = "",
+    var description: String = "",
+    var need_rank:Int = -1,
+)

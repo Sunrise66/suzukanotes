@@ -7,16 +7,14 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
-import com.sunrise.suzukanotes.common.DBHelper
 import com.sunrise.suzukanotes.common.Dialogs
 import com.sunrise.suzukanotes.common.Static
 import com.sunrise.suzukanotes.common.UpdateHelper
-import com.sunrise.suzukanotes.model.IMainModel
-import com.sunrise.suzukanotes.model.impl.MainModelImpl
 import com.sunrise.suzukanotes.ui.main.MainFragment
 import com.sunrise.suzukanotes.utils.FileUtils
 import kotlinx.coroutines.launch
 import per.goweii.anylayer.DialogLayer
+import per.goweii.anylayer.Layer
 import java.io.File
 
 class MainActivity : AppCompatActivity(), UpdateHelper.UpdateCallback {
@@ -39,13 +37,13 @@ class MainActivity : AppCompatActivity(), UpdateHelper.UpdateCallback {
     private fun checkUpdate() {
         if (!checkDbFile()) {
             Dialogs.showNewDBVersionDialog(this, true, object : Dialogs.NewDBVersionDialogCallback {
-                override fun positiveCallback(v: View) {
+                override fun positiveCallback(dialog: Layer, btn: Button) {
                     this@MainActivity.lifecycleScope.launch {
                         UpdateHelper.get().downloadDB(true)
                     }
                 }
 
-                override fun negativeCallback(v: View) {
+                override fun negativeCallback(dialog: Layer, btn: Button) {
 
                 }
             })
@@ -80,13 +78,13 @@ class MainActivity : AppCompatActivity(), UpdateHelper.UpdateCallback {
                 this,
                 false,
                 object : Dialogs.NewDBVersionDialogCallback {
-                    override fun positiveCallback(v: View) {
+                    override fun positiveCallback(dialog: Layer, btn: Button) {
                         this@MainActivity.lifecycleScope.launch {
                             UpdateHelper.get().downloadDB(false)
                         }
                     }
 
-                    override fun negativeCallback(v: View) {
+                    override fun negativeCallback(dialog: Layer, btn: Button) {
 
                     }
 

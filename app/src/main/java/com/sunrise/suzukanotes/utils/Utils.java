@@ -13,9 +13,11 @@ import java.util.ArrayList;
 public class Utils {
 
     private static Application app;
+
     public static void setApp(Application application) {
         Utils.app = application;
     }
+
     public static Application getApp() {
         return app;
     }
@@ -25,12 +27,12 @@ public class Utils {
      * @param list
      * @return
      */
-    public static String splitIntegerWithComma(ArrayList<Integer> list){
-        if(list.isEmpty())
+    public static String splitIntegerWithComma(ArrayList<Integer> list) {
+        if (list.isEmpty())
             return null;
 
         StringBuilder sb = new StringBuilder();
-        for(Integer item : list){
+        for (Integer item : list) {
             sb.append(item).append(",");
         }
         sb.deleteCharAt(sb.lastIndexOf(","));
@@ -56,15 +58,19 @@ public class Utils {
 
 
     private static DecimalFormat format = new DecimalFormat("#");
-    public static String roundDownDouble(double value){
+
+    public static String roundDownDouble(double value) {
         return format.format(Math.floor(value));
     }
-    public static String roundUpDouble(double value){
+
+    public static String roundUpDouble(double value) {
         return format.format(Math.ceil(value));
     }
-    public static String roundDouble(double value){
+
+    public static String roundDouble(double value) {
         return format.format(Math.round(value));
     }
+
     public static String roundIfNeed(double value) {
         if (value % 1 == 0) {
             return roundDouble(value);
@@ -74,6 +80,7 @@ public class Utils {
     }
 
     private static DecimalFormat format2 = new DecimalFormat("0.0");
+
     public static String getOneDecimalPlaces(Double value) {
         return format2.format(value);
     }

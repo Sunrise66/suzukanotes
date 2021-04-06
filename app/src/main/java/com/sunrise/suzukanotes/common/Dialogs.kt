@@ -8,6 +8,7 @@ import android.widget.TextView
 import com.sunrise.suzukanotes.R
 import per.goweii.anylayer.AnyLayer
 import per.goweii.anylayer.DialogLayer
+import per.goweii.anylayer.Layer
 
 /**
  *@author: JiangYu
@@ -27,7 +28,7 @@ object Dialogs {
             contentView(R.layout.normal_dialog)
             gravity(Gravity.CENTER)
             cancelableOnTouchOutside(false)
-            bindData {
+            bindData { layer ->
                 getView<TextView>(R.id.dialog_title).text =
                     mContext.getString(R.string.new_db_version_dialog_title)
                 if (isForce) {
@@ -38,7 +39,7 @@ object Dialogs {
                         text = mContext.getString(R.string.dialog_positive_button_1)
                         setOnClickListener {
                             dismiss()
-                            callbackNewDBVersion?.positiveCallback(it)
+                            callbackNewDBVersion?.positiveCallback(layer, this)
                         }
                     }
                 } else {
@@ -48,14 +49,14 @@ object Dialogs {
                         text = mContext.getString(R.string.dialog_negative_button_1)
                         setOnClickListener {
                             dismiss()
-                            callbackNewDBVersion?.negativeCallback(it)
+                            callbackNewDBVersion?.negativeCallback(layer, this)
                         }
                     }
                     getView<Button>(R.id.dialog_positive).apply {
                         text = mContext.getString(R.string.dialog_positive_button_1)
                         setOnClickListener {
                             dismiss()
-                            callbackNewDBVersion?.positiveCallback(it)
+                            callbackNewDBVersion?.positiveCallback(layer, this)
                         }
                     }
                 }
@@ -64,6 +65,7 @@ object Dialogs {
         }
     }
 
+    @JvmStatic
     fun showAlertDialog(
         mContext: Context,
         msg: String,
@@ -73,7 +75,7 @@ object Dialogs {
             contentView(R.layout.normal_dialog)
             gravity(Gravity.CENTER)
             cancelableOnTouchOutside(false)
-            bindData {
+            bindData { layer ->
                 getView<TextView>(R.id.dialog_title).text =
                     mContext.getString(R.string.alert_dialog_title)
                 getView<TextView>(R.id.message).text = msg
@@ -81,7 +83,7 @@ object Dialogs {
                     text = mContext.getString(R.string.dialog_positive_button_1)
                     setOnClickListener {
                         dismiss()
-                        callback?.positiveCallback(it)
+                        callback?.positiveCallback(layer, this)
                     }
                 }
                 getView<Button>(R.id.dialog_negative).visibility = View.GONE
@@ -90,6 +92,7 @@ object Dialogs {
         }
     }
 
+    @JvmStatic
     fun showDownloadDialog(mContext: Context): DialogLayer {
         return AnyLayer.dialog(mContext).apply {
             contentView(R.layout.normal_dialog)
@@ -107,12 +110,52 @@ object Dialogs {
         }
     }
 
+    @JvmStatic
+    fun showNormalDialog(
+        mContext: Context,
+        title: String,
+        msg: String,
+        positiveText: String = mContext.getString(R.string.dialog_positive_button_1),
+        negativeText: String = mContext.getString(R.string.dialog_negative_button_1),
+        gravity: Int = Gravity.CENTER,
+        cancelableOnTouchOutside: Boolean = true,
+        callback: NormalDialogCallback?
+    ): DialogLayer {
+        return AnyLayer.dialog(mContext).apply {
+            contentView(R.layout.normal_dialog)
+            gravity(gravity)
+            cancelableOnTouchOutside(cancelableOnTouchOutside)
+            bindData { layer ->
+                getView<TextView>(R.id.dialog_title).text = title
+                getView<TextView>(R.id.message).text = msg
+                getView<Button>(R.id.dialog_positive).apply {
+                    text = positiveText
+                    setOnClickListener {
+                        callback?.positiveCallback(layer, this)
+                    }
+                }
+                getView<Button>(R.id.dialog_negative).apply {
+                    text = negativeText
+                    setOnClickListener {
+                        callback?.negativeCallback(layer, this)
+                    }
+                }
+            }
+            show()
+        }
+    }
+
     interface NewDBVersionDialogCallback {
-        fun positiveCallback(v: View)
-        fun negativeCallback(v: View)
+        fun positiveCallback(dialog: Layer, btn: Button)
+        fun negativeCallback(dialog: Layer, btn: Button)
     }
 
     interface AlertDialogCallback {
-        fun positiveCallback(v: View)
+        fun positiveCallback(dialog: Layer, btn: Button)
+    }
+
+    interface NormalDialogCallback {
+        fun positiveCallback(dialog: Layer, btn: Button)
+        fun negativeCallback(dialog: Layer, btn: Button)
     }
 }

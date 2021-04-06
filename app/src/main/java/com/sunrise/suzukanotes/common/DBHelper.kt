@@ -9,6 +9,7 @@ import android.text.TextUtils
 import com.sunrise.suzukanotes.entity.db.RawSkill
 import com.sunrise.suzukanotes.entity.db.RawAvailableSkillSet
 import com.sunrise.suzukanotes.entity.db.RawCardData
+import com.sunrise.suzukanotes.entity.db.RawCardRarity
 import com.sunrise.suzukanotes.utils.FileUtils
 import com.sunrise.suzukanotes.utils.LogUtils
 import java.util.HashMap
@@ -329,6 +330,7 @@ class DBHelper(application: Application) :
             """
                 select cd.id,
                        cd.chara_id,
+                       cd.default_rarity,
                        cd.available_skill_set_id,
                        cd.talent_speed,
                        cd.talent_stamina,
@@ -348,13 +350,14 @@ class DBHelper(application: Application) :
         )
     }
 
-    fun getRawAvailableSkillSet(id: Int): RawAvailableSkillSet? {
-        return getBeanByRaw<RawAvailableSkillSet>(
+    fun getRawAvailableSkillSet(setId: Int): RawAvailableSkillSet? {
+        return getBeanByRaw(
             """
                 select available_skill_set_id,
+                       need_rank,
                        group_concat(skill_id, ';') skill_ids
                 from available_skill_set
-                where available_skill_set_id = $id
+                where available_skill_set_id = $setId
                 group by available_skill_set_id
             """.trimIndent(),
             RawAvailableSkillSet::class.java
@@ -362,7 +365,7 @@ class DBHelper(application: Application) :
     }
 
     fun getRawSkill(id: Int): RawSkill? {
-        return getBeanByRaw<RawSkill>(
+        return getBeanByRaw(
             """
                 select sd.*,
                 group_concat(td.text,';') details
@@ -371,6 +374,40 @@ class DBHelper(application: Application) :
                 where sd.id = $id and td.category in (47,48)
             """.trimIndent(),
             RawSkill::class.java
+        )
+    }
+
+    fun getRawCardRarities(cardId: Int): List<RawCardRarity>? {
+        return getBeanListByRaw(
+            """
+                select *
+                from card_rarity_data
+                where card_id = $cardId
+                ORDER BY rarity DESC
+            """.trimIndent(),
+            RawCardRarity::class.java
+        )
+    }
+
+    fun getRawCardRarityByRarity(cardId: Int, rarity: Int): RawCardRarity? {
+        return getBeanByRaw(
+            """
+                select *
+                from card_rarity_data
+                where rarity = $rarity and card_id = $cardId
+            """.trimIndent(),
+            RawCardRarity::class.java
+        )
+    }
+
+    fun getTitle(cardId: Int): String? {
+        return getBeanByRaw(
+            """
+                select text
+                from text_data
+                where "index" = ${cardId}01
+                  and category = 5
+            """.trimIndent(), String::class.java
         )
     }
 }
