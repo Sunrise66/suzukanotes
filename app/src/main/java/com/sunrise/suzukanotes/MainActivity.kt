@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
+import com.sunrise.suzukanotes.common.DBHelper
 import com.sunrise.suzukanotes.common.Dialogs
 import com.sunrise.suzukanotes.common.Static
 import com.sunrise.suzukanotes.common.UpdateHelper
@@ -16,6 +17,7 @@ import kotlinx.coroutines.launch
 import per.goweii.anylayer.DialogLayer
 import per.goweii.anylayer.Layer
 import java.io.File
+import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity(), UpdateHelper.UpdateCallback {
 
@@ -129,8 +131,11 @@ class MainActivity : AppCompatActivity(), UpdateHelper.UpdateCallback {
                 progressDialog?.getView<TextView>(R.id.message)?.text =
                     getString(R.string.progress_dialog_message_install_db)
             }
-            UpdateHelper.get().apply {
-                doDecompress()
+            thread(true){
+                UpdateHelper.get().apply {
+                    DBHelper.get().close()
+                    doDecompress()
+                }
             }
         }
     }
