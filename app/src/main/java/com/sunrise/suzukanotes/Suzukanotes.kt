@@ -3,6 +3,7 @@ package com.sunrise.suzukanotes
 import android.app.Activity
 import android.app.Application
 import android.os.Bundle
+import com.drake.brv.utils.BRV
 import com.sunrise.easyframe.EasyFrameStarter
 import com.sunrise.suzukanotes.common.DBHelper
 import com.sunrise.suzukanotes.common.I18N
@@ -46,6 +47,7 @@ class Suzukanotes : Application() {
         UpdateHelper.with(this)
         DBHelper.with(this)
         registerActivityLifecycleCallbacks(MyActivityLifeCycleCallBack())
+        BRV.modelId = BR.itemModel
     }
 
     private class MyActivityLifeCycleCallBack : ActivityLifecycleCallbacks {

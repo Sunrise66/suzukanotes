@@ -2,15 +2,18 @@ package com.sunrise.suzukanotes
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.sunrise.suzukanotes.common.DBHelper
 import com.sunrise.suzukanotes.common.Dialogs
 import com.sunrise.suzukanotes.common.Static
 import com.sunrise.suzukanotes.common.UpdateHelper
+import com.sunrise.suzukanotes.share.CharaShareViewModel
 import com.sunrise.suzukanotes.ui.main.MainFragment
 import com.sunrise.suzukanotes.utils.FileUtils
 import kotlinx.coroutines.launch
@@ -19,9 +22,15 @@ import per.goweii.anylayer.Layer
 import java.io.File
 import kotlin.concurrent.thread
 
-class MainActivity : AppCompatActivity(), UpdateHelper.UpdateCallback {
+class MainActivity : AppCompatActivity(), UpdateHelper.UpdateCallback,
+    CharaShareViewModel.MasterCharaCallBack {
 
     private var progressDialog: DialogLayer? = null
+    private val sharedChara: CharaShareViewModel by lazy {
+        ViewModelProvider(this)[CharaShareViewModel::class.java].apply {
+            callBack = this@MainActivity
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,23 +41,50 @@ class MainActivity : AppCompatActivity(), UpdateHelper.UpdateCallback {
                 .commitNow()
         }
         UpdateHelper.get().callback = this@MainActivity
-        checkUpdate()
+        if (checkDbFile()) {
+            loadData()
+        } else {
+            checkUpdate()
+            sharedChara.charaList.value = mutableListOf()
+        }
     }
 
 
-    private fun checkUpdate() {
-        if (!checkDbFile()) {
-            Dialogs.showNewDBVersionDialog(this, true, object : Dialogs.NewDBVersionDialogCallback {
+    private fun showForceDBUpdate() {
+        Dialogs.showNewDBVersionDialog(this, true, object : Dialogs.NewDBVersionDialogCallback {
+            override fun positiveCallback(dialog: Layer, btn: Button) {
+                this@MainActivity.lifecycleScope.launch {
+                    UpdateHelper.get().downloadDB(true)
+                }
+            }
+
+            override fun negativeCallback(dialog: Layer, btn: Button) {
+
+            }
+        })
+    }
+
+    private fun showNoForceDBUpdate() {
+        Dialogs.showNewDBVersionDialog(
+            this,
+            false,
+            object : Dialogs.NewDBVersionDialogCallback {
                 override fun positiveCallback(dialog: Layer, btn: Button) {
                     this@MainActivity.lifecycleScope.launch {
-                        UpdateHelper.get().downloadDB(true)
+                        UpdateHelper.get().downloadDB(false)
                     }
                 }
 
                 override fun negativeCallback(dialog: Layer, btn: Button) {
 
                 }
+
             })
+    }
+
+    private fun checkUpdate() {
+        if (!checkDbFile()) {
+            showForceDBUpdate()
         } else {
             this@MainActivity.lifecycleScope.launch {
                 UpdateHelper.get().checkDBVersion()
@@ -76,23 +112,10 @@ class MainActivity : AppCompatActivity(), UpdateHelper.UpdateCallback {
      */
     override fun dbCheckUpdateCompleted(hasUpdate: Boolean, updateInfo: Int) {
         if (hasUpdate) {
-            Dialogs.showNewDBVersionDialog(
-                this,
-                false,
-                object : Dialogs.NewDBVersionDialogCallback {
-                    override fun positiveCallback(dialog: Layer, btn: Button) {
-                        this@MainActivity.lifecycleScope.launch {
-                            UpdateHelper.get().downloadDB(false)
-                        }
-                    }
-
-                    override fun negativeCallback(dialog: Layer, btn: Button) {
-
-                    }
-
-                })
+            showNoForceDBUpdate()
         }
     }
+
 
     /**
      * 数据库下载开始回调
@@ -131,7 +154,7 @@ class MainActivity : AppCompatActivity(), UpdateHelper.UpdateCallback {
                 progressDialog?.getView<TextView>(R.id.message)?.text =
                     getString(R.string.progress_dialog_message_install_db)
             }
-            thread(true){
+            thread(true) {
                 UpdateHelper.get().apply {
                     DBHelper.get().close()
                     doDecompress()
@@ -156,6 +179,8 @@ class MainActivity : AppCompatActivity(), UpdateHelper.UpdateCallback {
         }
         UpdateHelper.get().dbVersion = versionInfo
         setStatic()
+        clearData()
+        loadData()
     }
 
     private fun setStatic() {
@@ -176,5 +201,21 @@ class MainActivity : AppCompatActivity(), UpdateHelper.UpdateCallback {
                 UpdateHelper.get().dbLocal = "jp"
             }
         }
+    }
+
+    private fun loadData() {
+        sharedChara.loadData()
+    }
+
+    private fun clearData() {
+        DBHelper.get().close()
+        sharedChara.charaList.value = mutableListOf()
+    }
+
+    override fun charaLoadFinished(succeeded: Boolean) {
+        if (!succeeded) {
+            Log.e("dberr","loadFail!")
+        }
+        checkUpdate()
     }
 }

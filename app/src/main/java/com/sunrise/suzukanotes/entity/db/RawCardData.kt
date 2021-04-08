@@ -1,6 +1,7 @@
 package com.sunrise.suzukanotes.entity.db
 
 import com.sunrise.suzukanotes.common.DBHelper
+import com.sunrise.suzukanotes.common.Static
 import com.sunrise.suzukanotes.entity.bean.Card
 import com.sunrise.suzukanotes.entity.bean.Skill
 import com.sunrise.suzukanotes.utils.beanMapper

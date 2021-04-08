@@ -1,6 +1,7 @@
 package com.sunrise.suzukanotes.entity.bean
 
 import com.sunrise.suzukanotes.common.DBHelper
+import com.sunrise.suzukanotes.common.Static
 import com.sunrise.suzukanotes.entity.db.RawCardRarity
 
 
@@ -28,7 +29,7 @@ data class Card(
     var about_tail: String = "",
     var shoes: String = "",
     var about_family: String = "",
-    var available_skills: List<Skill>,
+    var available_skills: List<Skill>? = null,
     var talent_speed: Int = -1,
     var talent_stamina: Int = -1,
     var talent_pow: Int = -1,
@@ -40,5 +41,7 @@ data class Card(
     var default_rarity: Int = -1,
     var rarityDatas: List<RawCardRarity>? = null,
 ) {
-
+    fun getIconUrl(): String {
+        return Static.CHARA_ICON_URL.format(chara_id, chara_id)
+    }
 }
