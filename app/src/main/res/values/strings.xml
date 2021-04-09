@@ -14,6 +14,10 @@
     <string name="progress_dialog_message_install_db_complete">数据库更新完成！</string>
     <string name="dialog_positive_button_1">确定</string>
     <string name="dialog_negative_button_1">取消</string>
+    <string name="text_running_style_nige">逃げ</string>
+    <string name="text_running_style_senko">先行</string>
+    <string name="text_running_style_sashi">差し</string>
+    <string name="text_running_style_oikomi">追込</string>
     <string name="space_modifier" translatable="false">&#160;%s&#160;</string>
     <string name="space_modifier_2" translatable="false">&#160;&#160;%s&#160;&#160;</string>
 </resources>

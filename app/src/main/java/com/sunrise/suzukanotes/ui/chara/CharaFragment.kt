@@ -6,13 +6,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.drake.brv.utils.grid
-import com.drake.brv.utils.linear
 import com.drake.brv.utils.setup
 import com.sunrise.suzukanotes.R
 import com.sunrise.suzukanotes.databinding.CharaFragmentBinding
+import com.sunrise.suzukanotes.databinding.CharaItemBinding
 import com.sunrise.suzukanotes.entity.bean.Card
 import com.sunrise.suzukanotes.share.CharaShareViewModel
 import com.sunrise.suzukanotes.share.CharaShareViewModelFactory
@@ -44,9 +43,24 @@ class CharaFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        rv.linear().setup {
-            addType<Card>(R.layout.chara_item)
-        }.models = sharedChara.charaList.value
+        setObserver()
     }
 
+    private fun setObserver() {
+        viewModel.charaLiveList.observe(viewLifecycleOwner) {
+            if (it.isNotEmpty()) {
+                rv.grid(spanCount = it.size / 5).setup {
+                    addType<Card>(R.layout.chara_item)
+                    onBind {
+                        val charaBinding = getBinding<CharaItemBinding>()
+                        charaBinding.charaListVm = viewModel
+                        charaBinding.itemPosition = adapterPosition
+                    }
+                }.models = it
+            }
+        }
+        sharedChara.charaList.observe(viewLifecycleOwner) {
+            viewModel.filterDefault()
+        }
+    }
 }

@@ -15,4 +15,5 @@
     <color name="normal_text_color">#9E6843</color>
     <color name="bottom_tab_color">#00FFFFFF</color>
     <color name="chara_list_bg_color">#80FFFFFF</color>
+    <color name="chara_list_text_bg_color">#CCFFFFFF</color>
 </resources>

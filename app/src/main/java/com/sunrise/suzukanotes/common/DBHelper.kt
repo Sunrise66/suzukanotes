@@ -382,7 +382,7 @@ class DBHelper(application: Application) :
             """
                 select *
                 from card_rarity_data
-                where card_id = $cardId
+                where card_id = ${cardId}01
                 ORDER BY rarity
             """.trimIndent(),
             RawCardRarity::class.java
@@ -394,7 +394,7 @@ class DBHelper(application: Application) :
             """
                 select *
                 from card_rarity_data
-                where rarity = $rarity and card_id = $cardId
+                where rarity = $rarity and card_id = ${cardId}01
             """.trimIndent(),
             RawCardRarity::class.java
         )

@@ -1,6 +1,5 @@
 package com.sunrise.suzukanotes.entity.bean
 
-import com.sunrise.suzukanotes.common.DBHelper
 import com.sunrise.suzukanotes.common.Static
 import com.sunrise.suzukanotes.entity.db.RawCardRarity
 
@@ -43,5 +42,33 @@ data class Card(
 ) {
     fun getIconUrl(): String {
         return Static.CHARA_ICON_URL.format(chara_id, chara_id)
+    }
+
+    fun getDistance(): Int {
+        val data = rarityDatas?.get(0)
+        val long = data?.proper_distance_long
+        val middle = data?.proper_distance_middle
+        val mile = data?.proper_distance_mile
+        if (long == 7) {
+            return Static.DISTANCE_LONG
+        }
+        if (middle == 7) {
+            return Static.DISTANCE_MIDDLE
+        }
+        if (mile == 7) {
+            return Static.DISTANCE_MILE
+        }
+        return Static.DISTANCE_SHORT
+    }
+
+    fun getField(): Int {
+        val data = rarityDatas?.get(0)
+        val turf = data?.proper_ground_turf
+        val dirt = data?.proper_ground_dirt
+        return if (turf!! > dirt!!) {
+            Static.FIELD_TURF
+        } else {
+            Static.FIELD_DIRT
+        }
     }
 }

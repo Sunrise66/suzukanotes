@@ -1,9 +1,13 @@
 package com.sunrise.suzukanotes.base
 
 import android.widget.ImageView
+import android.widget.TextView
+import androidx.annotation.StringRes
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.sunrise.suzukanotes.R
+import com.sunrise.suzukanotes.common.Static
 
 /**
  *@author: JiangYu
@@ -43,5 +47,19 @@ fun loadImage(view: ImageView, imageUrl: String?, placeHolder: Int?, errorHolder
                 .load(imageUrl)
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(view)
+    }
+}
+
+@BindingAdapter("runningStyle")
+fun setRunningStyleText(view: TextView, runningStyle: Int) {
+    when (runningStyle) {
+        Static.RUNNING_STYLE_NIGE -> view.text =
+            view.context.getString(R.string.text_running_style_nige)
+        Static.RUNNING_STYLE_SENKO -> view.text =
+            view.context.getString(R.string.text_running_style_senko)
+        Static.RUNNING_STYLE_SASHI -> view.text =
+            view.context.getString(R.string.text_running_style_sashi)
+        Static.RUNNING_STYLE_OIKOMI -> view.text =
+            view.context.getString(R.string.text_running_style_oikomi)
     }
 }

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:bind="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -13,28 +12,59 @@
             name="itemPosition"
             type="Integer" />
 
+        <variable
+            name="charaListVm"
+            type="com.sunrise.suzukanotes.ui.chara.CharaViewModel" />
+
+        <import type="android.view.View" />
+
         <import type="com.sunrise.suzukanotes.R" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="55dp"
-        android:layout_height="55dp"
-        android:background="@color/black">
+    <androidx.constraintlayout.widget.ConstraintLayout style="@style/unit_icon">
 
-        <TextView
-            app:layout_constraintBottom_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/unit_icon"
+            errorHolder="@{R.drawable.chr_icon_0000}"
+            imageUrl="@{itemModel.iconUrl}"
+            placeHolder="@{R.drawable.chr_icon_0000}"
+            android:transitionName="@{itemModel.name}"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            bind:errorHolder="@{R.drawable.chr_icon_0000}"
-            bind:imageUrl="@{itemModel.iconUrl}"
-            bind:placeHolder="@{R.drawable.chr_icon_0000}" />
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="@{charaListVm.selectedRunningType == -1?View.GONE:View.VISIBLE,default=gone}"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <ImageView
+                android:id="@+id/run_style_icon"
+                style="@style/run_style_icon"
+                imageLevel="@{itemModel.running_style}"
+                android:layout_marginStart="2dp"
+                android:layout_marginBottom="2dp"
+                android:src="@drawable/chara_runstyle_selector"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent" />
+
+            <TextView
+                android:id="@+id/running_style_text"
+                style="@style/run_style_text"
+                runningStyle="@{itemModel.running_style}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@color/chara_list_bg_color"
+                android:paddingStart="5dp"
+                android:text="place"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/run_style_icon"
+                app:layout_constraintTop_toTopOf="@id/run_style_icon" />
+        </LinearLayout>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
