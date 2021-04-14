@@ -1,5 +1,6 @@
 package com.sunrise.suzukanotes.base
 
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.StringRes
@@ -61,5 +62,24 @@ fun setRunningStyleText(view: TextView, runningStyle: Int) {
             view.context.getString(R.string.text_running_style_sashi)
         Static.RUNNING_STYLE_OIKOMI -> view.text =
             view.context.getString(R.string.text_running_style_oikomi)
+    }
+}
+
+@BindingAdapter("distance")
+fun setDistanceStyleText(view: TextView, distance: Int) {
+    when (distance) {
+        Static.DISTANCE_SHORT -> view.text = view.context.getString(R.string.text_distance_short)
+        Static.DISTANCE_MILE -> view.text = view.context.getString(R.string.text_distance_mile)
+        Static.DISTANCE_MIDDLE -> view.text = view.context.getString(R.string.text_distance_middle)
+        Static.DISTANCE_LONG -> view.text = view.context.getString(R.string.text_distance_long)
+    }
+}
+
+@BindingAdapter("how2show")
+fun setVisibility(view: View, block: () -> Boolean) {
+    if (block()){
+        view.visibility = View.VISIBLE
+    }else{
+        view.visibility = View.GONE
     }
 }

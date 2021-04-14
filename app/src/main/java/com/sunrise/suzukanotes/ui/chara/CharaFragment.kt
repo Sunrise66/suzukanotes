@@ -47,16 +47,25 @@ class CharaFragment : Fragment() {
     }
 
     private fun setObserver() {
-        viewModel.charaLiveList.observe(viewLifecycleOwner) {
-            if (it.isNotEmpty()) {
-                rv.grid(spanCount = it.size / 5).setup {
+        viewModel.charaLiveList.observe(viewLifecycleOwner) { cardList->
+            if (cardList.isNotEmpty()) {
+                rv.grid(spanCount = cardList.size / 5).setup {
                     addType<Card>(R.layout.chara_item)
                     onBind {
                         val charaBinding = getBinding<CharaItemBinding>()
                         charaBinding.charaListVm = viewModel
                         charaBinding.itemPosition = adapterPosition
                     }
-                }.models = it
+                    onClick(R.id.unit_icon){
+                        when(it){
+                            R.id.unit_icon -> {
+                                sharedChara.selectedChara = cardList[adapterPosition]
+                                viewModel.selectedPosition.value = adapterPosition
+                                println(viewModel.selectedPosition.value)
+                            }
+                        }
+                    }
+                }.models = cardList
             }
         }
         sharedChara.charaList.observe(viewLifecycleOwner) {

@@ -18,6 +18,10 @@
     <string name="text_running_style_senko">先行</string>
     <string name="text_running_style_sashi">差し</string>
     <string name="text_running_style_oikomi">追込</string>
+    <string name="text_distance_long">长距离</string>
+    <string name="text_distance_middle">中距离</string>
+    <string name="text_distance_mile">英里</string>
+    <string name="text_distance_short">短距离</string>
     <string name="space_modifier" translatable="false">&#160;%s&#160;</string>
     <string name="space_modifier_2" translatable="false">&#160;&#160;%s&#160;&#160;</string>
 </resources>

@@ -10,7 +10,7 @@
 
         <variable
             name="itemPosition"
-            type="Integer" />
+            type="java.lang.Integer" />
 
         <variable
             name="charaListVm"
@@ -21,24 +21,71 @@
         <import type="com.sunrise.suzukanotes.R" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout style="@style/unit_icon">
+    <androidx.constraintlayout.widget.ConstraintLayout style="@style/unit_icon_round">
 
         <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/utx_frm_cursor_00"
+            android:visibility="@{itemPosition == charaListVm.selectedPosition?View.VISIBLE:View.GONE}"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="@id/unit_icon" />
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:rotation="90"
+            android:src="@drawable/utx_frm_cursor_00"
+            android:visibility="@{itemPosition == charaListVm.selectedPosition?View.VISIBLE:View.GONE}"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/unit_icon" />
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:rotation="180"
+            android:src="@drawable/utx_frm_cursor_00"
+            android:visibility="@{itemPosition == charaListVm.selectedPosition?View.VISIBLE:View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:rotation="-90"
+            android:src="@drawable/utx_frm_cursor_00"
+            android:visibility="@{itemPosition == charaListVm.selectedPosition?View.VISIBLE:View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:text="@{itemPosition}"/>
+
+        <ImageView
+            android:id="@+id/unit_icon"
             style="@style/unit_icon"
             errorHolder="@{R.drawable.chr_icon_0000}"
             imageUrl="@{itemModel.iconUrl}"
             placeHolder="@{R.drawable.chr_icon_0000}"
             android:transitionName="@{itemModel.name}"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="@dimen/unit_icon_width"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:visibility="@{charaListVm.selectedRunningType == -1?View.GONE:View.VISIBLE,default=gone}"
-            app:layout_constraintBottom_toBottomOf="parent">
+            app:layout_constraintBottom_toBottomOf="@id/unit_icon"
+            app:layout_constraintLeft_toLeftOf="@id/unit_icon">
 
             <ImageView
                 android:id="@+id/run_style_icon"
@@ -59,7 +106,38 @@
                 android:layout_gravity="center"
                 android:background="@color/chara_list_bg_color"
                 android:paddingStart="5dp"
-                android:text="place"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/run_style_icon"
+                app:layout_constraintTop_toTopOf="@id/run_style_icon" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="@dimen/unit_icon_width"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="@{charaListVm.selectedRunningType == -1?View.VISIBLE:View.GONE,default=visible}"
+            app:layout_constraintBottom_toBottomOf="@id/unit_icon"
+            app:layout_constraintLeft_toLeftOf="@id/unit_icon">
+
+            <ImageView
+                android:id="@+id/field_icon"
+                style="@style/run_style_icon"
+                imageLevel="@{itemModel.field}"
+                android:layout_marginStart="2dp"
+                android:layout_marginBottom="2dp"
+                android:src="@drawable/field_selector"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent" />
+
+            <TextView
+                android:id="@+id/distance_text"
+                style="@style/run_style_text"
+                distance="@{itemModel.distance}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@color/chara_list_bg_color"
+                android:paddingStart="5dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toRightOf="@id/run_style_icon"
                 app:layout_constraintTop_toTopOf="@id/run_style_icon" />
