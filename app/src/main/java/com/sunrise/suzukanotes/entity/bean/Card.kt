@@ -37,6 +37,8 @@ data class Card(
     var talent_groupId: Int = -1,
     var bg_id: Int = -1,
     var running_style: Int = -1,
+    var ui_nameplate_color_1: String = "",
+    var ui_nameplate_color_2: String = "",
     var default_rarity: Int = -1,
     var rarityDatas: List<RawCardRarity>? = null,
 ) {

@@ -8,7 +8,7 @@ import com.sunrise.suzukanotes.share.CharaShareViewModel
 
 class CharaViewModel(private val sharedViewModelChara: CharaShareViewModel) : ViewModel() {
     val charaLiveList = MutableLiveData<MutableList<Card>>()
-    var selectedPosition = MutableLiveData(0)
+    var selectedPosition = 0
     var isAsc: Boolean = false
     var selectedField: Int = -1
     var selectedDistance: Int = -1

@@ -56,12 +56,16 @@ class CharaFragment : Fragment() {
                         charaBinding.charaListVm = viewModel
                         charaBinding.itemPosition = adapterPosition
                     }
+                    onPayload {
+
+                    }
                     onClick(R.id.unit_icon){
                         when(it){
                             R.id.unit_icon -> {
                                 sharedChara.selectedChara = cardList[adapterPosition]
-                                viewModel.selectedPosition.value = adapterPosition
-                                println(viewModel.selectedPosition.value)
+                                notifyItemChanged(viewModel.selectedPosition)
+                                viewModel.selectedPosition = adapterPosition
+                                notifyItemChanged(adapterPosition)
                             }
                         }
                     }

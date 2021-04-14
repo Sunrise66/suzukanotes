@@ -1,7 +1,6 @@
 package com.sunrise.suzukanotes.entity.db
 
 import com.sunrise.suzukanotes.common.DBHelper
-import com.sunrise.suzukanotes.common.Static
 import com.sunrise.suzukanotes.entity.bean.Card
 import com.sunrise.suzukanotes.entity.bean.Skill
 import com.sunrise.suzukanotes.utils.beanMapper
@@ -25,6 +24,23 @@ data class RawCardData(
     var talent_groupId: Int = -1,
     var bg_id: Int = -1,
     var running_style: Int = -1,
+    var image_color_main: String = "",
+    var image_color_sub: String = "",
+    var ui_color_main: String = "",
+    var ui_color_sub: String = "",
+    var ui_training_color_1: String = "",
+    var ui_training_color_2: String = "",
+    var ui_border_color: String = "",
+    var ui_num_color_1: String = "",
+    var ui_num_color_2: String = "",
+    var ui_nameplate_color_1: String = "",
+    var ui_nameplate_color_2: String = "",
+    var ui_turn_color: String = "",
+    var ui_wipe_color_1: String = "",
+    var ui_wipe_color_2: String = "",
+    var ui_wipe_color_3: String = "",
+    var ui_speech_color_1: String = "",
+    var ui_speech_color_2: String = "",
     var details: String = ""
 ) {
     fun getCard(): Card {

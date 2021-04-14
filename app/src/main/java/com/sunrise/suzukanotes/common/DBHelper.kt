@@ -328,23 +328,41 @@ class DBHelper(application: Application) :
     fun getRawCardDatas(): List<RawCardData>? {
         return getBeanListByRaw(
             """
-                select cd.id,
-                       cd.chara_id,
-                       cd.default_rarity,
-                       cd.available_skill_set_id,
-                       cd.talent_speed,
-                       cd.talent_stamina,
-                       cd.talent_pow,
-                       cd.talent_guts,
-                       cd.talent_wiz,
-                       cd.talent_group_id,
-                       cd.bg_id,
-                       cd.running_style,
-                       group_concat(td.text, ';') details
-                from card_data cd
-                         left join text_data td on cd.chara_id = td."index"
-                where td.category in (6, 7, 8, 9, 144, 157, 158, 162, 163, 164, 165, 166, 167, 168, 169)
-                group by td."index"
+               select cd.id,
+               cd.chara_id,
+               cd.default_rarity,
+               cd.available_skill_set_id,
+               cd.talent_speed,
+               cd.talent_stamina,
+               cd.talent_pow,
+               cd.talent_guts,
+               cd.talent_wiz,
+               cd.talent_group_id,
+               cd.bg_id,
+               cd.running_style,
+               crd.image_color_main,
+               crd.image_color_sub,
+               crd.ui_color_main,
+               crd.ui_color_sub,
+               crd.ui_training_color_1,
+               crd.ui_training_color_2,
+               crd.ui_border_color,
+               crd.ui_num_color_1,
+               crd.ui_num_color_2,
+               crd.ui_nameplate_color_1,
+               crd.ui_nameplate_color_2,
+               crd.ui_turn_color,
+               crd.ui_wipe_color_1,
+               crd.ui_wipe_color_2,
+               crd.ui_wipe_color_3,
+               crd.ui_speech_color_1,
+               crd.ui_speech_color_2,
+               group_concat(td.text, ';') details
+               from card_data cd
+                        left join text_data td on cd.chara_id = td."index"
+                        left join chara_data crd on cd.chara_id = crd.id
+               where td.category in (6, 7, 8, 9, 144, 157, 158, 162, 163, 164, 165, 166, 167, 168, 169)
+               group by td."index"
             """.trimIndent(),
             RawCardData::class.java
         )
